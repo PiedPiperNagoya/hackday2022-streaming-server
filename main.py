@@ -26,11 +26,11 @@ def post_stream():
     }
 
 
-@app.patch(
+@app.put(
     '/stream/{stream_id}',
     status_code=202
 )
-def patch_stream(
+def put_stream(
     stream_id: Optional[str] = Path(
         default='',
     ),
