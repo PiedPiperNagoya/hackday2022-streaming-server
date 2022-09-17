@@ -32,17 +32,20 @@ def main():
         return 0
 
     p = pyaudio.PyAudio()
-    stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
-                    channels=wf.getnchannels(),
-                    rate=wf.getframerate(),
-                    output=True)
+    stream = p.open(format=pyaudio.paInt16,
+                    rate=SAMPLERATE,
+                    channels=1,
+                    input_device_index=1,
+                    input=True,
+                    frames_per_buffer=SAMPLERATE*2,
+                    stream_callback=callback,
+                    output=False)
     stream.start_stream()
     while stream.is_active():
         time.sleep(0.1)
 
     stream.stop_stream()
     stream.close()
-    audio.terminate()
 
 
 if __name__ == '__main__':
