@@ -31,7 +31,7 @@ def post_stream():
     status_code=202
 )
 def patch_stream(
-    stream_id: str = Path(
+    stream_id: Optional[str] = Path(
         default='',
     ),
     stream_status: Optional[str] = Body(
