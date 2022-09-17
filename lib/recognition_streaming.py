@@ -20,6 +20,8 @@ class RecognitionStreaming:
     def recognition_stream(self, stream_status):
         progress_file = '.' + self.stream_id + '_progressing'
 
+        print(stream_status)
+
         if stream_status == 'stop':
             if not os.path.isfile(progress_file):
                 return 'Not Started Yet'
@@ -33,7 +35,7 @@ class RecognitionStreaming:
         filename = self.stream_id + '_output.wav'
 
         try:
-            wf = wave.open(filename, '	r')
+            wf = wave.open(filename, 'r')
         except FileNotFoundError:
             return '[Error 404] No such file or directory: ' + filename
 
