@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, Path, Body
+from fastapi import FastAPI, Path, Form
 from typing import Optional
 import uuid
 from lib.recognition_streaming import RecognitionStreaming
@@ -34,9 +34,8 @@ def put_stream(
     stream_id: Optional[str] = Path(
         default='',
     ),
-    stream_status: Optional[str] = Body(
+    stream_status: Optional[str] = Form(
         default='',
-        description='start|stop'
     )
 ):
     recognition_streaming = RecognitionStreaming(stream_id)
