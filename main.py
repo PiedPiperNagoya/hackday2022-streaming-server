@@ -30,12 +30,13 @@ def main():
         print("[Error 404] No such file or directory: " + filename)
         return 0
 
-    chunk = SAMPLERATE
+    duration = 2
+    chunk = SAMPLERATE * duration
     data = wf.readframes(chunk)
     while data != '':
         recognition_data(data)
         data = wf.readframes(chunk)
-        time.sleep(0.9)
+        time.sleep(duration - 0.2)
 
 
 if __name__ == '__main__':
