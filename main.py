@@ -22,17 +22,15 @@ def callback(in_data, frame_count, time_info, status):
 
 def main():
     global sprec
-    sprec = speech_recognition.Recognizer()  # インスタンスを生成
+    sprec = speech_recognition.Recognizer()
     filename = "output.wav"
 
-    # ストリームファイルの読み込み
     try:
         wf = wave.open(filename, "r")
-    except FileNotFoundError:  # ファイルが存在しなかった場合
+    except FileNotFoundError:
         print("[Error 404] No such file or directory: " + Filename)
         return 0
 
-    # ストリームを開く
     p = pyaudio.PyAudio()
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
                     channels=wf.getnchannels(),
