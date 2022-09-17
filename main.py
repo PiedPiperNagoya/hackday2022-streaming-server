@@ -23,6 +23,7 @@ def callback(in_data, frame_count, time_info, status):
 def main():
     global sprec
     sprec = speech_recognition.Recognizer()  # インスタンスを生成
+    filename = "output.wav"
 
     # ストリームファイルの読み込み
     try:
