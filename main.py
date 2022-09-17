@@ -1,7 +1,7 @@
 import time
 import speech_recognition
 import pyaudio
-import soundfile as sf
+import wave
 
 SAMPLERATE = 44100
 
@@ -23,15 +23,18 @@ def callback(in_data, frame_count, time_info, status):
 def main():
     global sprec
     sprec = speech_recognition.Recognizer()
-
-    # read stream file
     filename = "output.wav"
-    data, rate = sf.read(filename)
+
+    try:
+        wf = wave.open(filename, "r")
+    except FileNotFoundError:
+        print("[Error 404] No such file or directory: " + Filename)
+        return 0
 
     p = pyaudio.PyAudio()
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
-                    channels=1,
-                    rate=rate,
+                    channels=wf.getnchannels(),
+                    rate=wf.getframerate(),
                     output=True)
     stream.start_stream()
     while stream.is_active():
