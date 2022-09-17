@@ -1,4 +1,5 @@
 import time
+import os
 import speech_recognition
 import wave
 
@@ -30,13 +31,19 @@ def main():
         print("[Error 404] No such file or directory: " + filename)
         return 0
 
+    index = 0
+
     duration = 2
     chunk = SAMPLERATE * duration
     data = wf.readframes(chunk)
     while data != '':
-        recognition_data(data)
-        data = wf.readframes(chunk)
-        time.sleep(duration - 0.2)
+        print(os.path.getsize(filename))
+        if os.path.getsize(filename) > chunk * index:
+            time.sleep(0.2)
+        else:
+            index += 1
+            recognition_data(data)
+            data = wf.readframes(chunk)
 
 
 if __name__ == '__main__':
