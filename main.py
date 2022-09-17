@@ -37,8 +37,6 @@ def main():
     chunk = SAMPLERATE * duration
     data = wf.readframes(chunk)
     while data != '':
-        print(os.path.getsize(filename))
-        print(chunk * index)
         if os.path.getsize(filename) < chunk * index:
             time.sleep(0.2)
         else:
