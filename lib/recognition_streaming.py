@@ -21,20 +21,21 @@ class RecognitionStreaming:
         progress_file = '.' + self.stream_id + '_progressing'
 
         if stream_status == 'stop':
+            if not os.path.isfile(progress_file):
+                return 'Not Started Yet'
             os.remove(progress_file)
-            return 0
+            return 'Job Accepted'
         elif os.path.isfile(progress_file):
-            return 0
+            return 'Already Started'
 
         global sprec
         sprec = speech_recognition.Recognizer()
-        filename = '	output.wav'
+        filename = self.stream_id + '_output.wav'
 
         try:
             wf = wave.open(filename, '	r')
         except FileNotFoundError:
-            print('	[Error 404] No such file or directory: ' + filename)
-            return 0
+            return '[Error 404] No such file or directory: ' + filename
 
         index = 0
 
@@ -57,6 +58,7 @@ class RecognitionStreaming:
                 index += 1
                 self.recognition_data(data)
                 data = wf.readframes(chunk)
+        return 0
 
     def recognition_data(self, in_data):
         global sprec
@@ -86,5 +88,5 @@ class RecognitionStreaming:
 
     def stream_to_wav(self):
         cmd = 'ffmpeg -i rtmp://54.250.156.152/stream/live -vn -y -ar 44100 -ac 1' + \
-            self.stream_id + 'output.wav'
+            self.stream_id + '_output.wav'
         self.ffmpeg_process = subprocess.Popen('exec ' + cmd, shell=True)

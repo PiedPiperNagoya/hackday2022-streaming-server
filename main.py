@@ -30,19 +30,25 @@ def post_stream():
     status_code=202
 )
 def patch_stream(
-        stream_id: str = Path(
-            default='',
-        ),
+    stream_id: str = Path(
+        default='',
+    ),
     stream_status: str = Body(
-            default='',
-            description='start|stop'
-            )
+        default='',
+        description='start|stop'
+    )
 ):
     recognition_streaming = RecognitionStreaming(stream_id)
-    recognition_streaming.recognition_stream(stream_status)
-    return {
-        'message': 'Job Accepted'
-    }
+    message = recognition_streaming.recognition_stream(stream_status)
+
+    if message:
+        return {
+            'message': message
+        }
+    else:
+        return {
+            'message': 'Job Accepted'
+        }
 
 
 if __name__ == '__main__':
