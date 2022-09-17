@@ -38,7 +38,8 @@ def main():
     data = wf.readframes(chunk)
     while data != '':
         print(os.path.getsize(filename))
-        if os.path.getsize(filename) > chunk * index:
+        print(chunk * index)
+        if os.path.getsize(filename) < chunk * index:
             time.sleep(0.2)
         else:
             index += 1
