@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, Path
 import uuid
-from .lib.recognition_streaming import RecognitionStreaming
+from lib.recognition_streaming import RecognitionStreaming
 
 app = FastAPI()
 
