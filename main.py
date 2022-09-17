@@ -2,8 +2,10 @@ import time
 import os
 import speech_recognition
 import wave
+import requests
 
 SAMPLERATE = 44100
+API_ADDR = 'http://ec2co-ecsel-17isx9yimwb9h-755813027.ap-northeast-1.elb.amazonaws.com:8080/api/'
 
 
 def recognition_data(in_data):
@@ -11,13 +13,24 @@ def recognition_data(in_data):
     try:
         audiodata = speech_recognition.AudioData(in_data, SAMPLERATE, 2)
         sprec_text = sprec.recognize_google(audiodata, language='ja-JP')
-        print(sprec_text)
+        send_api(sprec_text)
     except speech_recognition.UnknownValueError:
         pass
     except speech_recognition.RequestError as e:
         pass
     finally:
         return 0
+
+
+def send_api(text):
+    response = requests.post(
+        API_ADDR + 'post/add/keywords',
+        data={
+            'sentence': text
+        }
+    )
+    if response.status_code != 200:
+        print(response.text)
 
 
 def main():
