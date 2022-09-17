@@ -1,67 +1,33 @@
-import time
-import os
-import speech_recognition
-import wave
-import json
-import requests
+import uvicorn
+from fastapi import FastAPI, Path
+import uuid
+from .lib.recognition_streaming import RecognitionStreaming
 
-SAMPLERATE = 44100
-API_ADDR = 'http://ec2co-ecsel-17isx9yimwb9h-755813027.ap-northeast-1.elb.amazonaws.com:8080/api/'
+app = FastAPI()
 
 
-def recognition_data(in_data):
-    global sprec
-    try:
-        audiodata = speech_recognition.AudioData(in_data, SAMPLERATE, 2)
-        sprec_text = sprec.recognize_google(audiodata, language='ja-JP')
-        send_api(sprec_text)
-    except speech_recognition.UnknownValueError:
-        pass
-    except speech_recognition.RequestError as e:
-        pass
-    finally:
-        return 0
+@app.get('/')
+def root():
+    return {'message': 'Hello World'}
 
 
-def send_api(text):
-    obj = {
-        'sentence': text
+@app.post('/stream')
+def post_stream():
+    stream_id = str(uuid.uuid4())
+    return {
+        'stream_id': stream_id
     }
-    json_data = json.dumps(obj).encode("utf-8")
-    headers = {"Content-Type": "application/json"}
-    print(text)
-    response = requests.post(
-        url=API_ADDR + 'post/add/keywords',
-        data=json_data,
-        headers=headers)
-    if response.status_code != 200:
-        print(response.status_code)
 
 
-def main():
-    global sprec
-    sprec = speech_recognition.Recognizer()
-    filename = "output.wav"
-
-    try:
-        wf = wave.open(filename, "r")
-    except FileNotFoundError:
-        print("[Error 404] No such file or directory: " + filename)
-        return 0
-
-    index = 0
-
-    duration = 2
-    chunk = SAMPLERATE * duration
-    data = wf.readframes(chunk)
-    while data != '':
-        if os.path.getsize(filename) < chunk * index:
-            time.sleep(0.2)
-        else:
-            index += 1
-            recognition_data(data)
-            data = wf.readframes(chunk)
+@app.patch('/stream/{stream_id}')
+def patch_stream(
+        stream_id: str = Path(
+            default='',
+        )
+):
+    recognition_streaming = RecognitionStreaming(stream_id)
+    recognition_streaming.recognition_stream()
 
 
 if __name__ == '__main__':
-    main()
+    uvicorn.run(app, host='0.0.0.0', port=8000)
