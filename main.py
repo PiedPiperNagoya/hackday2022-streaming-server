@@ -2,6 +2,7 @@ import time
 import os
 import speech_recognition
 import wave
+import json
 import requests
 
 SAMPLERATE = 44100
@@ -23,13 +24,16 @@ def recognition_data(in_data):
 
 
 def send_api(text):
+    obj = {
+        'sentence': text
+    }
+    json_data = json.dumps(obj).encode("utf-8")
+    headers = {"Content-Type": "application/json"}
     print(text)
     response = requests.post(
-        API_ADDR + 'post/add/keywords',
-        data={
-            'sentence': text
-        }
-    )
+        url=API_ADDR + 'post/add/keywords',
+        data=json_data,
+        headers=headers)
     if response.status_code != 200:
         print(response.status_code)
 
