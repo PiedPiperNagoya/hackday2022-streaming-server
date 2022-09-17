@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI, Path, Body
+from typing import Optional
 import uuid
 from lib.recognition_streaming import RecognitionStreaming
 
@@ -33,7 +34,7 @@ def patch_stream(
     stream_id: str = Path(
         default='',
     ),
-    stream_status: str = Body(
+    stream_status: Optional[str] = Body(
         default='',
         description='start|stop'
     )
