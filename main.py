@@ -23,6 +23,7 @@ def recognition_data(in_data):
 
 
 def send_api(text):
+    print(text)
     response = requests.post(
         API_ADDR + 'post/add/keywords',
         data={
