@@ -34,6 +34,9 @@ class RecognitionStreaming:
         sprec = speech_recognition.Recognizer()
         filename = self.stream_id + '_output.wav'
 
+        self.stream_to_wav(filename)
+        time.sleep(2)
+
         try:
             wf = wave.open(filename, 'r')
         except FileNotFoundError:
@@ -88,7 +91,7 @@ class RecognitionStreaming:
         if response.status_code != 200:
             print(response.status_code)
 
-    def stream_to_wav(self):
-        cmd = 'ffmpeg -i rtmp://54.250.156.152/stream/live -vn -y -ar 44100 -ac 1' + \
-            self.stream_id + '_output.wav'
+    def stream_to_wav(self, filename):
+        cmd = 'ffmpeg -i rtmp://54.250.156.152/stream/live -vn -y -ar 44100 -ac 1 ' + \
+            filename
         self.ffmpeg_process = subprocess.Popen('exec ' + cmd, shell=True)
