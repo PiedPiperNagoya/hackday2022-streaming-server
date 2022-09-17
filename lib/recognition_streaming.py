@@ -35,7 +35,7 @@ class RecognitionStreaming:
         filename = self.stream_id + '_output.wav'
 
         self.stream_to_wav(filename)
-        time.sleep(2)
+        time.sleep(10)
 
         try:
             wf = wave.open(filename, 'r')
