@@ -9,6 +9,7 @@ import subprocess
 # vars
 SAMPLERATE = 44100
 API_ADDR = 'http://ec2co-ecsel-17isx9yimwb9h-755813027.ap-northeast-1.elb.amazonaws.com:8080/api/'
+RTMP_IP = '54.65.169.18'
 
 
 class RecognitionStreaming:
@@ -92,6 +93,6 @@ class RecognitionStreaming:
             print(response.status_code)
 
     def stream_to_wav(self, filename):
-        cmd = 'ffmpeg -i rtmp://54.250.156.152/stream/live -vn -y -ar 44100 -ac 1 ' + \
+        cmd = 'ffmpeg -i rtmp://' + RTMP_IP + '/stream/live -vn -y -ar 44100 -ac 1 ' + \
             filename
         self.ffmpeg_process = subprocess.Popen('exec ' + cmd, shell=True)
