@@ -16,7 +16,7 @@ def recognition_data(in_data):
     except speech_recognition.RequestError as e:
         pass
     finally:
-        return (None, pyaudio.paContinue)
+        return 0
 
 
 def main():
