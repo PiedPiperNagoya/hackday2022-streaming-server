@@ -35,6 +35,7 @@ def main():
     while data != '':
         recognition_data(data)
         data = wf.readframes(chunk)
+        time.sleep(0.9)
 
 
 if __name__ == '__main__':
