@@ -6,7 +6,7 @@ import json
 import requests
 
 SAMPLERATE = 44100
-API_ADDR = 'http://ec2co-ecsel-17isx9yimwb9h-755813027.ap-northeast-1.elb.amazonaws.com:8080/api/'
+API_ADDR = 'http://ec2co-ecsel-1iorfmjo9lc1i-1398652606.ap-northeast-1.elb.amazonaws.com:5000/api/'
 
 
 def recognition_data(in_data):
